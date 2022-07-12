@@ -1,0 +1,34 @@
+.input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+select {
+  margin: 0.1rem 0 1rem;
+  width: 100%;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+label {
+  color: #ccc;
+}
+
+input,
+select {
+  display: block;
+  padding: 0.5rem 0.25rem;
+}
+
+input {
+  width: calc(100% - 12px);
+}
+
+button {
+  border: transparent;
+  padding: 1rem 0;
+  border-radius: 20px;
+  color: #fff;
+  background-color: rgb(61, 90, 223);
+}

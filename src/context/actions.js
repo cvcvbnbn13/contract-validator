@@ -1,0 +1,10 @@
+export const HANDLE_INPUT_TOOL = 'HANDLE_INPUT_TOOL';
+export const INIT_BATCH_TOOL = 'INIT_BATCH_TOOL';
+
+export const CHECK_ADDR_IS_CONTRACT = 'CHECK_ADDR_IS_CONTRACT';
+
+export const VALIDATE_BEGIN = 'VALIDATE_BEGIN';
+
+export const ERC_165_CHECK = 'ERC_165_CHECK';
+export const ERC_721_CHECK = 'ERC_721_CHECK';
+export const ERC_1155_CHECK = 'ERC_1155_CHECK';
