@@ -35,10 +35,9 @@ const reducer = (state, action) => {
   if (action.type === INIT_BATCH_TOOL) {
     return {
       ...state,
-      ethereum: window.ethereum,
-      ContractValidatorContract: action.payload.signedContract,
-      ERC721Contract: action.payload.signedERC721Contract,
-      ERC1155Contract: action.payload.signedERC1155Contract,
+      ContractValidatorContract: action.payload.contract,
+      ERC721Contract: action.payload.ERC721Contract,
+      ERC1155Contract: action.payload.ERC1155Contract,
     };
   }
 

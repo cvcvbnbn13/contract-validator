@@ -35,11 +35,10 @@ const provider = ethers.getDefaultProvider('rinkeby', {
   },
 });
 
-const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+// const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
 
 const initialState = {
   isLoading: false,
-  ethereum: null,
   ContractValidatorContract: null,
   ERC721Contract: null,
   ERC1155Contract: null,
@@ -88,8 +87,8 @@ const ValidatorProvider = ({ children }) => {
   useEffect(() => {
     async function initTool() {
       try {
-        await web3Provider.send('eth_requestAccounts', []);
-        const signer = web3Provider.getSigner();
+        // await web3Provider.send('eth_requestAccounts', []);
+        // const signer = web3Provider.getSigner();
 
         const contract = await getContractValidatorContract(provider);
         const ERC721Contract = await getERC721Contract(
@@ -101,16 +100,16 @@ const ValidatorProvider = ({ children }) => {
           provider
         );
 
-        const signedContract = contract.connect(signer);
-        const signedERC721Contract = ERC721Contract.connect(signer);
-        const signedERC1155Contract = ERC1155Contract.connect(signer);
+        // const signedContract = contract.connect(signer);
+        // const signedERC721Contract = ERC721Contract.connect(signer);
+        // const signedERC1155Contract = ERC1155Contract.connect(signer);
 
         dispatch({
           type: INIT_BATCH_TOOL,
           payload: {
-            signedContract,
-            signedERC721Contract,
-            signedERC1155Contract,
+            contract,
+            ERC721Contract,
+            ERC1155Contract,
           },
         });
       } catch (error) {
