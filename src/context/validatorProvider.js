@@ -9,6 +9,17 @@ import {
   ERC_165_CHECK,
   ERC_721_CHECK,
   ERC_1155_CHECK,
+  ERC_721_METADATA_CHECK,
+  ERC_721_ENUMERABLE_CHECK,
+  ERC_721_NAME_CHECK,
+  ERC_721_SYMBOL_CHECK,
+  ERC_721_TOTAL_SUPPLY_CHECK,
+  ERC_721_TOKEN_BY_INDEX_CHECK,
+  ERC_721_TOKEN_OF_OWNER_BY_INDEX_CHECK,
+  ERC_721_TOKENURI_CHECK,
+  ERC_1155_TOKENURI_CHECK,
+  TOKEN_METADATA_CHECK,
+  REFRESH,
 } from './actions';
 
 import {
@@ -35,10 +46,28 @@ const initialState = {
   provider,
   currentUser: '',
   isValidating: false,
-  addrIsContract: null,
-  ERC165Check: null,
-  ERC721Check: null,
-  ERC1155Check: null,
+  ContractValidatePart: {
+    addrIsContract: null,
+    ERC165Check: null,
+    ERC721Check: null,
+    ERC1155Check: null,
+  },
+  ERC721ValidatePart: {
+    ERC721MetadataCheck: null,
+    ERC721EnumerableCheck: null,
+    ERC721NameCheck: null,
+    ERC721SymbolCheck: null,
+    ERC721TotalSupplyCheck: null,
+    ERC721TokenByIndexCheck: null,
+    ERC721TokenOfOwnerByIndexCheck: null,
+    ERC721TokenURICheck: null,
+  },
+  ERC1155ValidatePart: {
+    ERC1155TokenURICheck: null,
+  },
+  MetadataValidatePart: {
+    tokenMetadataCheck: null,
+  },
   inputValue: {
     Network: '',
     TokenID: '',
@@ -50,6 +79,8 @@ const ContractValidatorContext = createContext();
 
 const ERC1155IID = '0xd9b67a26';
 const ERC721IID = '0x80ac58cd';
+const ERC721MetadataIID = '0x5b5e139f';
+const ERC721EnumerableIID = '0x780e9d63';
 
 const ValidatorProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -109,7 +140,7 @@ const ValidatorProvider = ({ children }) => {
     if (
       state.ContractValidatorContract === null ||
       !state.isValidating ||
-      !state.addrIsContract
+      !state.ContractValidatePart.addrIsContract
     )
       return;
 
@@ -128,7 +159,7 @@ const ValidatorProvider = ({ children }) => {
   }, [
     state.ContractValidatorContract,
     state.isValidating,
-    state.addrIsContract,
+    state.ContractValidatePart.addrIsContract,
     state.inputValue.NFTAddress,
   ]);
 
@@ -136,7 +167,8 @@ const ValidatorProvider = ({ children }) => {
     if (
       state.ERC721Contract === null ||
       !state.isValidating ||
-      !state.addrIsContract ||
+      !state.ContractValidatePart.addrIsContract ||
+      state.ERC721Contract?.address === '' ||
       state.ERC721Contract?.address !== state.inputValue.NFTAddress
     )
       return;
@@ -144,6 +176,7 @@ const ValidatorProvider = ({ children }) => {
     const checkERC721 = async () => {
       try {
         const res = await state.ERC721Contract?.supportsInterface(ERC721IID);
+
         dispatch({ type: ERC_721_CHECK, payload: { res } });
       } catch (error) {
         console.error(error);
@@ -154,7 +187,7 @@ const ValidatorProvider = ({ children }) => {
   }, [
     state.ERC721Contract,
     state.isValidating,
-    state.addrIsContract,
+    state.ContractValidatePart.addrIsContract,
     state.inputValue.NFTAddress,
   ]);
 
@@ -162,7 +195,7 @@ const ValidatorProvider = ({ children }) => {
     if (
       state.ERC1155Contract === null ||
       !state.isValidating ||
-      !state.addrIsContract ||
+      !state.ContractValidatePart.addrIsContract ||
       state.ERC1155Contract?.address !== state.inputValue.NFTAddress
     )
       return;
@@ -180,8 +213,187 @@ const ValidatorProvider = ({ children }) => {
   }, [
     state.ERC1155Contract,
     state.isValidating,
-    state.addrIsContract,
+    state.ContractValidatePart.addrIsContract,
     state.inputValue.NFTAddress,
+  ]);
+
+  useEffect(() => {
+    if (
+      state.ContractValidatePart.ERC721Check === null ||
+      state.ERC721Contract?.address !== state.inputValue.NFTAddress
+    )
+      return;
+
+    const ERC721Tests = async () => {
+      const ERC721MetadataCheckRes =
+        await state.ERC721Contract?.supportsInterface(ERC721MetadataIID);
+
+      dispatch({
+        type: ERC_721_METADATA_CHECK,
+        payload: { ERC721MetadataCheckRes },
+      });
+
+      const ERC721EnumerableCheckRes =
+        await state.ERC721Contract?.supportsInterface(ERC721EnumerableIID);
+
+      dispatch({
+        type: ERC_721_ENUMERABLE_CHECK,
+        payload: { ERC721EnumerableCheckRes },
+      });
+
+      const ERC721NameCheckRes = await state.ERC721Contract?.name();
+      dispatch({
+        type: ERC_721_NAME_CHECK,
+        payload: { ERC721NameCheckRes: ERC721NameCheckRes !== '' },
+      });
+
+      const ERC721SymbolCheckRes = await state.ERC721Contract?.symbol();
+      dispatch({
+        type: ERC_721_SYMBOL_CHECK,
+        payload: { ERC721SymbolCheckRes: ERC721SymbolCheckRes !== '' },
+      });
+
+      const ERC721TotalSupplyCheckRes =
+        await state.ERC721Contract?.totalSupply();
+      dispatch({
+        type: ERC_721_TOTAL_SUPPLY_CHECK,
+        payload: {
+          ERC721TotalSupplyCheckRes:
+            ERC721TotalSupplyCheckRes?._hex.toString() !== '',
+        },
+      });
+
+      const ERC721TokenByIndexCheckRes =
+        await state.ERC721Contract?.hasOwnProperty('tokenByIndex');
+      dispatch({
+        type: ERC_721_TOKEN_BY_INDEX_CHECK,
+        payload: { ERC721TokenByIndexCheckRes },
+      });
+
+      const ERC721TokenOfOwnerByIndexCheckRes =
+        await state.ERC721Contract?.hasOwnProperty('tokenByIndex');
+      dispatch({
+        type: ERC_721_TOKEN_OF_OWNER_BY_INDEX_CHECK,
+        payload: { ERC721TokenOfOwnerByIndexCheckRes },
+      });
+
+      const ERC721TokenURICheckRes = await state.ERC721Contract?.tokenURI(
+        state.inputValue.TokenID
+      );
+      dispatch({
+        type: ERC_721_TOKENURI_CHECK,
+        payload: { ERC721TokenURICheckRes: ERC721TokenURICheckRes !== '' },
+      });
+    };
+
+    ERC721Tests();
+  }, [
+    state.ContractValidatePart.ERC721Check,
+    state.ERC721Contract,
+    state.inputValue.NFTAddress,
+    state.inputValue.TokenID,
+  ]);
+
+  useEffect(() => {
+    if (
+      state.ContractValidatePart.ERC1155Check === null ||
+      state.ERC1155Contract?.address !== state.inputValue.NFTAddress
+    )
+      return;
+
+    if (state.ContractValidatePart.ERC1155Check === false) {
+      dispatch({
+        type: ERC_1155_TOKENURI_CHECK,
+        payload: { ERC1155TokenURICheckRes: false },
+      });
+      return;
+    }
+
+    const ERC1155Tests = async () => {
+      const ERC1155TokenURICheckRes = await state.ERC1155Contract?.uri(
+        state.inputValue.TokenID
+      );
+      dispatch({
+        type: ERC_1155_TOKENURI_CHECK,
+        payload: { ERC1155TokenURICheckRes: ERC1155TokenURICheckRes !== '' },
+      });
+    };
+
+    ERC1155Tests();
+  }, [
+    state.ContractValidatePart.ERC1155Check,
+    state.ERC1155Contract,
+    state.inputValue.NFTAddress,
+    state.inputValue.TokenID,
+  ]);
+
+  useEffect(() => {
+    if (!state.isValidating) return;
+
+    if (
+      state.ERC721ValidatePart.ERC721TokenURICheck === null &&
+      state.ERC1155ValidatePart.ERC1155TokenURICheck === null
+    )
+      return;
+    const metadata721Test = async () => {
+      const ERC721Metadata = await state.ERC721Contract?.tokenURI(
+        state.inputValue.TokenID
+      );
+
+      const Format721 = ERC721Metadata.replace('ipfs://', 'ipfs/');
+
+      const resOf721 = await fetch(`https://cf-ipfs.com/${Format721}`);
+
+      const JSON721 = await resOf721.json();
+
+      const res = JSON721.hasOwnProperty('description');
+
+      dispatch({
+        type: TOKEN_METADATA_CHECK,
+        payload: { TokenMetadataCheckRes: res },
+      });
+    };
+
+    const metadata1155Test = async () => {
+      const ERC1155Metadata = await state.ERC1155Contract?.uri(
+        state.inputValue.TokenID
+      );
+      const Format1155 = ERC1155Metadata.replace('ipfs://', 'ipfs/');
+
+      const resOf1155 = await fetch(`https://cf-ipfs.com/${Format1155}`);
+
+      const JSON1155 = await resOf1155.json();
+
+      const res = JSON1155.hasOwnProperty('description');
+
+      dispatch({
+        type: TOKEN_METADATA_CHECK,
+        payload: { TokenMetadataCheckRes: res },
+      });
+    };
+
+    if (state.ERC1155ValidatePart.ERC1155TokenURICheck) {
+      metadata1155Test();
+      return;
+    } else if (
+      state.ERC721ValidatePart.ERC721TokenURICheck &&
+      !state.ERC1155ValidatePart.ERC1155TokenURICheck
+    ) {
+      metadata721Test();
+      return;
+    } else {
+      dispatch({
+        type: TOKEN_METADATA_CHECK,
+        payload: { TokenMetadataCheckRes: false },
+      });
+    }
+  }, [
+    state.ERC1155Contract,
+    state.ERC1155ValidatePart.ERC1155TokenURICheck,
+    state.ERC721Contract,
+    state.ERC721ValidatePart.ERC721TokenURICheck,
+    state.inputValue.TokenID,
+    state.isValidating,
   ]);
 
   const handleInput = e => {
@@ -200,16 +412,19 @@ const ValidatorProvider = ({ children }) => {
       return;
     } else if (!state.inputValue.TokenID) {
       alert('Please fill in TokenID.');
+      return;
     }
 
     dispatch({ type: VALIDATE_BEGIN, payload: true });
   };
 
-  console.log(state);
+  const refresh = () => {
+    dispatch({ type: REFRESH });
+  };
 
   return (
     <ContractValidatorContext.Provider
-      value={{ ...state, handleInput, validate }}
+      value={{ ...state, handleInput, validate, refresh }}
     >
       {children}
     </ContractValidatorContext.Provider>

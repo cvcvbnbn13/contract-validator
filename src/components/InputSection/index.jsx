@@ -16,10 +16,6 @@ const networkOption = [
 const InputSection = () => {
   const { inputValue, handleInput, validate } = useValidator();
 
-  const handleConsole = () => {
-    console.log(inputValue);
-  };
-
   return (
     <div className="input-section">
       <label htmlFor="Network">網路</label>

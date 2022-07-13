@@ -1,0 +1,69 @@
+{
+  "ContractValidatePart": {
+    "addrIsContract": {
+      "title": "Is the address a contract",
+      "description": "Check whether there's a contract in the given address."
+    },
+    "ERC165Check": {
+      "title": "Is the contract ERC-165 ready",
+      "description": "A standard method to detect what interfaces a smart contract implements."
+    },
+    "ERC721Check": {
+      "title": "Is the contract ERC-721 ready",
+      "description": "Most wildly used standard interface for NFTs (non-fungible tokens)."
+    },
+    "ERC1155Check": {
+      "title": "Is the contract ERC-1155 ready",
+      "description": "A standard interface for contracts that manage multiple token types."
+    }
+  },
+
+  "ERC721ValidatePart": {
+    "ERC721MetadataCheck": {
+      "title": "Is it ERC721Metadata ready",
+      "description": "A standard interface by OpenZeppelin for providing metadata of an NFT."
+    },
+    "ERC721EnumerableCheck": {
+      "title": "Is it ERC721Enumerable ready",
+      "description": "A standard interface by OpenZeppelin for loading NFTs from an address."
+    },
+    "ERC721NameCheck": {
+      "title": "Does it have a name",
+      "description": "An NFT should have a token name."
+    },
+    "ERC721SymbolCheck": {
+      "title": "Does it have a symbol",
+      "description": "An NFT should have a token symbol."
+    },
+    "ERC721TotalSupplyCheck": {
+      "title": "Does it have a total supply",
+      "description": "The NFT should provide a valid number of the total supply."
+    },
+    "ERC721TokenByIndexCheck": {
+      "title": "Is tokenByIndex() supported",
+      "description": "This methods is used to enumerate all the NFTs."
+    },
+    "ERC721TokenOfOwnerByIndexCheck": {
+      "title": "Is tokenOfOwnerByIndex() supported",
+      "description": "This methods is used to enumerate the NFTs from an address."
+    },
+    "ERC721TokenURICheck": {
+      "title": "Does it have a valid URI",
+      "description": "Each ERC721 NFT should have a token URI for providing the metadata."
+    }
+  },
+
+  "ERC1155ValidatePart": {
+    "ERC1155TokenURICheck": {
+      "title": "Does it have a valid URI",
+      "description": "Each ERC1155 NFT should have a token URI for providing the metadata."
+    }
+  },
+
+  "MetadataValidatePart": {
+    "tokenMetadataCheck": {
+      "title": "Does metadata URL readable",
+      "description": "The metadata URL should contain a JSON file that describes the NFT."
+    }
+  }
+}

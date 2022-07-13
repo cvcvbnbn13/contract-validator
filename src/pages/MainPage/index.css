@@ -3,8 +3,24 @@
   height: 100%;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 2rem 0;
+}
+
+.top-section {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  padding-top: 2rem;
+}
+
+.main-section {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgb(226, 220, 220);
 }
 
 h2 {
@@ -15,7 +31,7 @@ h2 {
   width: 50%;
   background-color: rgb(230, 223, 223);
   border-radius: 10px;
-  margin-right: 2rem;
+  margin-right: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
