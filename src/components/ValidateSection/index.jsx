@@ -6,8 +6,6 @@ const text = require('./text.json');
 const ValidateSeciton = ({ title, validatePart, validateObject }) => {
   const itemArray = Object.entries(text[validatePart]);
 
-  console.log(itemArray);
-
   return (
     <section className="validate-section">
       <h3>{title}</h3>

@@ -6,25 +6,23 @@
   padding: 0.75rem 1rem;
 }
 
-.PENDING {
+h4 {
+  border-radius: 1rem;
   color: #fff;
-  background-color: #aaa;
   width: fit-content;
-  padding: 0.25rem;
+  padding: 0.5rem;
+}
+
+.PENDING {
+  background-color: #aaa;
 }
 
 .PASS {
-  color: #fff;
   background-color: rgb(44, 192, 14);
-  width: fit-content;
-  padding: 0.25rem;
 }
 
 .FAILED {
-  color: #fff;
   background-color: rgb(248, 29, 29);
-  width: fit-content;
-  padding: 0.25rem;
 }
 
 p {
