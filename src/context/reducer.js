@@ -17,6 +17,8 @@ import {
   ERC_1155_TOKENURI_CHECK,
   TOKEN_METADATA_CHECK,
   REFRESH,
+  BLOCK_ERC721_CHECK,
+  BLOCK_ERC1155_CHECK,
 } from './actions';
 
 import { initialState } from './validatorProvider';
@@ -191,6 +193,31 @@ const reducer = (state, action) => {
 
   if (action.type === REFRESH) {
     return { ...initialState };
+  }
+
+  if (action.type === BLOCK_ERC721_CHECK) {
+    return {
+      ...state,
+      ERC721ValidatePart: {
+        ERC721MetadataCheck: false,
+        ERC721EnumerableCheck: false,
+        ERC721NameCheck: false,
+        ERC721SymbolCheck: false,
+        ERC721TotalSupplyCheck: false,
+        ERC721TokenByIndexCheck: false,
+        ERC721TokenOfOwnerByIndexCheck: false,
+        ERC721TokenURICheck: false,
+      },
+    };
+  }
+
+  if (action.type === BLOCK_ERC1155_CHECK) {
+    return {
+      ...state,
+      ERC1155ValidatePart: {
+        ERC1155TokenURICheck: false,
+      },
+    };
   }
 };
 

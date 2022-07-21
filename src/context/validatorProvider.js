@@ -20,6 +20,8 @@ import {
   ERC_1155_TOKENURI_CHECK,
   TOKEN_METADATA_CHECK,
   REFRESH,
+  BLOCK_ERC721_CHECK,
+  BLOCK_ERC1155_CHECK,
 } from './actions';
 
 import {
@@ -87,9 +89,6 @@ const ValidatorProvider = ({ children }) => {
   useEffect(() => {
     async function initTool() {
       try {
-        // await web3Provider.send('eth_requestAccounts', []);
-        // const signer = web3Provider.getSigner();
-
         const contract = await getContractValidatorContract(provider);
         const ERC721Contract = await getERC721Contract(
           state.inputValue.NFTAddress,
@@ -99,10 +98,6 @@ const ValidatorProvider = ({ children }) => {
           state.inputValue.NFTAddress,
           provider
         );
-
-        // const signedContract = contract.connect(signer);
-        // const signedERC721Contract = ERC721Contract.connect(signer);
-        // const signedERC1155Contract = ERC1155Contract.connect(signer);
 
         dispatch({
           type: INIT_BATCH_TOOL,
@@ -223,6 +218,14 @@ const ValidatorProvider = ({ children }) => {
     )
       return;
 
+    if (state.ContractValidatePart.ERC721Check === false) {
+      dispatch({
+        type: BLOCK_ERC721_CHECK,
+        payload: false,
+      });
+      return;
+    }
+
     const ERC721Tests = async () => {
       const ERC721MetadataCheckRes =
         await state.ERC721Contract?.supportsInterface(ERC721MetadataIID);
@@ -302,6 +305,14 @@ const ValidatorProvider = ({ children }) => {
 
     if (state.ContractValidatePart.ERC1155Check === false) {
       dispatch({
+        type: BLOCK_ERC1155_CHECK,
+        payload: false,
+      });
+      return;
+    }
+
+    if (state.ContractValidatePart.ERC1155Check === false) {
+      dispatch({
         type: ERC_1155_TOKENURI_CHECK,
         payload: { ERC1155TokenURICheckRes: false },
       });
@@ -373,14 +384,17 @@ const ValidatorProvider = ({ children }) => {
 
     if (state.ERC1155ValidatePart.ERC1155TokenURICheck) {
       metadata1155Test();
+      console.log(1);
       return;
     } else if (
       state.ERC721ValidatePart.ERC721TokenURICheck &&
       !state.ERC1155ValidatePart.ERC1155TokenURICheck
     ) {
       metadata721Test();
+      console.log(2);
       return;
     } else {
+      console.log(3);
       dispatch({
         type: TOKEN_METADATA_CHECK,
         payload: { TokenMetadataCheckRes: false },
