@@ -384,20 +384,17 @@ const ValidatorProvider = ({ children }) => {
 
     if (state.ERC1155ValidatePart.ERC1155TokenURICheck) {
       metadata1155Test();
-      console.log(1);
       return;
     } else if (
       state.ERC721ValidatePart.ERC721TokenURICheck &&
       !state.ERC1155ValidatePart.ERC1155TokenURICheck
     ) {
       metadata721Test();
-      console.log(2);
       return;
     } else {
-      console.log(3);
       dispatch({
         type: TOKEN_METADATA_CHECK,
-        payload: { TokenMetadataCheckRes: false },
+        payload: { TokenMetadataCheckRes: null },
       });
     }
   }, [
