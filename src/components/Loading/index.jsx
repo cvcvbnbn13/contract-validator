@@ -2,10 +2,10 @@ import React from 'react';
 import { useValidator } from '../../context/validatorProvider';
 import './index.css';
 
-const Loading = () => {
-  const { isLoading } = useValidator();
+const Loading = ({ checkRes }) => {
+  const { isValidating } = useValidator();
 
-  return isLoading ? (
+  return checkRes === null && isValidating ? (
     <div className="spinner">
       <div className="bounce1"></div>
       <div className="bounce2"></div>

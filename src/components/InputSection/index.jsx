@@ -14,7 +14,7 @@ const networkOption = [
 ];
 
 const InputSection = () => {
-  const { inputValue, handleInput, validate } = useValidator();
+  const { inputValue, handleInput, validate, currentNetwork } = useValidator();
 
   return (
     <div className="input-section">
@@ -32,6 +32,14 @@ const InputSection = () => {
             </option>
           );
         })}
+        <option
+          value="inject"
+          disabled={parseInt(window.ethereum?.chainId) === 4}
+        >
+          {inputValue.Network === 'inject'
+            ? `${currentNetwork?.name} (MetaMask Injected)`
+            : 'Injected Provider - MetaMask'}
+        </option>
       </select>
 
       <label htmlFor="NFTAddress">合約地址</label>

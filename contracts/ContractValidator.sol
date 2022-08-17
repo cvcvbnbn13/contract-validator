@@ -4,11 +4,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
 
-// interface ERC721Partial {}
-// interface ERC1155Partial {
-//   function supportsInterface(bytes4 interfaceID) external view returns (bool);
-// }
-
 contract ContractValidator{
   function check165IsAlready(address account)external view returns(bool) {
 

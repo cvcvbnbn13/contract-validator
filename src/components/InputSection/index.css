@@ -5,6 +5,8 @@
 
 input,
 select {
+  display: block;
+  padding: 0.5rem 0.25rem;
   margin: 0.1rem 0 1rem;
   width: 100%;
   border: 2px solid #ccc;
@@ -13,12 +15,6 @@ select {
 
 label {
   color: #ccc;
-}
-
-input,
-select {
-  display: block;
-  padding: 0.5rem 0.25rem;
 }
 
 input {

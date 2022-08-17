@@ -22,30 +22,33 @@ import {
   REFRESH,
   BLOCK_ERC721_CHECK,
   BLOCK_ERC1155_CHECK,
+  INJECT_META_MASK_RPC,
+  CHANGE_CHAIN,
 } from './actions';
 
 import {
   getContractValidatorContract,
   getERC721Contract,
   getERC1155Contract,
+  chains,
 } from '../utils';
 
-const provider = ethers.getDefaultProvider('rinkeby', {
+const defaultProvider = ethers.getDefaultProvider('rinkeby', {
   infura: {
     projectId: process.env.INFURA_PROJECT_ID,
     projectSecret: process.env.INFURA_PROJECT_SECRET,
   },
 });
 
-// const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
-
 const initialState = {
   isLoading: false,
   ContractValidatorContract: null,
   ERC721Contract: null,
   ERC1155Contract: null,
-  provider,
+  provider: defaultProvider,
+  chainsList: chains,
   currentUser: '',
+  currentNetwork: null,
   isValidating: false,
   ContractValidatePart: {
     addrIsContract: null,
@@ -78,6 +81,7 @@ const initialState = {
 
 const ContractValidatorContext = createContext();
 
+const ERC165IID = '0x01ffc9a7';
 const ERC1155IID = '0xd9b67a26';
 const ERC721IID = '0x80ac58cd';
 const ERC721MetadataIID = '0x5b5e139f';
@@ -89,14 +93,14 @@ const ValidatorProvider = ({ children }) => {
   useEffect(() => {
     async function initTool() {
       try {
-        const contract = await getContractValidatorContract(provider);
+        const contract = await getContractValidatorContract(state.provider);
         const ERC721Contract = await getERC721Contract(
           state.inputValue.NFTAddress,
-          provider
+          state.provider
         );
         const ERC1155Contract = await getERC1155Contract(
           state.inputValue.NFTAddress,
-          provider
+          state.provider
         );
 
         dispatch({
@@ -112,14 +116,23 @@ const ValidatorProvider = ({ children }) => {
       }
     }
     initTool();
-  }, [state.inputValue.NFTAddress]);
+  }, [state.inputValue.NFTAddress, state.provider]);
+
+  useEffect(() => {
+    const handleChangeChain = () => {
+      window.ethereum.on('chainChanged', function () {
+        dispatch({ type: CHANGE_CHAIN });
+      });
+    };
+    handleChangeChain();
+  }, []);
 
   useEffect(() => {
     if (!state.isValidating) return;
 
     const checkAddrIsContract = async () => {
       try {
-        const res = await provider.getCode(state.inputValue.NFTAddress);
+        const res = await state.provider.getCode(state.inputValue.NFTAddress);
         const isContract = res !== '0x';
         dispatch({ type: CHECK_ADDR_IS_CONTRACT, payload: { isContract } });
       } catch (error) {
@@ -128,7 +141,7 @@ const ValidatorProvider = ({ children }) => {
     };
 
     checkAddrIsContract();
-  }, [state.inputValue.NFTAddress, state.isValidating]);
+  }, [state.inputValue.NFTAddress, state.isValidating, state.provider]);
 
   useEffect(() => {
     if (
@@ -140,9 +153,7 @@ const ValidatorProvider = ({ children }) => {
 
     const checkERC165 = async () => {
       try {
-        const res = await state.ContractValidatorContract?.check165IsAlready(
-          state.inputValue.NFTAddress
-        );
+        const res = await state.ERC721Contract?.supportsInterface(ERC165IID);
         dispatch({ type: ERC_165_CHECK, payload: { res } });
       } catch (error) {
         console.error(error);
@@ -155,6 +166,7 @@ const ValidatorProvider = ({ children }) => {
     state.isValidating,
     state.ContractValidatePart.addrIsContract,
     state.inputValue.NFTAddress,
+    state.ERC721Contract,
   ]);
 
   useEffect(() => {
@@ -407,10 +419,46 @@ const ValidatorProvider = ({ children }) => {
   ]);
 
   const handleInput = e => {
+    if (e.target.value === 'inject') {
+      injectMetaMaskRPC();
+    }
+    if (e.target.value === 'rinkeby') {
+      injectRinkeby();
+    }
     dispatch({
       type: HANDLE_INPUT_TOOL,
       payload: { name: e.target.name, value: e.target.value },
     });
+  };
+
+  const injectRinkeby = async () => {
+    try {
+      const MetaMaskRPC = state.chainsList.find(chain => chain.chainId === 4);
+      const provider = defaultProvider;
+      dispatch({
+        type: INJECT_META_MASK_RPC,
+        payload: { provider, MetaMaskRPC },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const injectMetaMaskRPC = async () => {
+    try {
+      await window.ethereum?.request({ method: 'eth_requestAccounts' });
+      const MetaMaskRPCChainId = parseInt(window.ethereum.chainId);
+      const MetaMaskRPC = state.chainsList.find(
+        chain => chain.chainId === MetaMaskRPCChainId
+      );
+      const provider = ethers.getDefaultProvider(MetaMaskRPC.rpc[0]);
+      dispatch({
+        type: INJECT_META_MASK_RPC,
+        payload: { provider, MetaMaskRPC },
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const validate = () => {

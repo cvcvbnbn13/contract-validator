@@ -25,6 +25,7 @@
 
 h2 {
   font-size: 3rem;
+  margin: 0;
 }
 
 .banner {
@@ -36,10 +37,6 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.banner h2 {
-  margin: 0;
 }
 
 .input-section {

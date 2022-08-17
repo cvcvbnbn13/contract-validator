@@ -19,6 +19,8 @@ import {
   REFRESH,
   BLOCK_ERC721_CHECK,
   BLOCK_ERC1155_CHECK,
+  INJECT_META_MASK_RPC,
+  CHANGE_CHAIN,
 } from './actions';
 
 import { initialState } from './validatorProvider';
@@ -216,6 +218,24 @@ const reducer = (state, action) => {
       ...state,
       ERC1155ValidatePart: {
         ERC1155TokenURICheck: false,
+      },
+    };
+  }
+
+  if (action.type === INJECT_META_MASK_RPC) {
+    return {
+      ...state,
+      provider: action.payload.provider,
+      currentNetwork: action.payload.MetaMaskRPC,
+    };
+  }
+
+  if (action.type === CHANGE_CHAIN) {
+    return {
+      ...state,
+      inputValue: {
+        ...state.inputValue,
+        Network: '',
       },
     };
   }
