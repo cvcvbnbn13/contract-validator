@@ -32,10 +32,7 @@ const InputSection = () => {
             </option>
           );
         })}
-        <option
-          value="inject"
-          disabled={parseInt(window.ethereum?.chainId) === 4}
-        >
+        <option value="inject">
           {inputValue.Network === 'inject'
             ? `${
                 currentNetwork?.name ? currentNetwork.name : ''

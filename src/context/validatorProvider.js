@@ -35,7 +35,7 @@ import {
 
 const defaultProvider = ethers.getDefaultProvider('rinkeby', {
   infura: {
-    projectId: process.env.INFURA_PROJECT_ID,
+    projectId: process.env.INFURA_PROJECT_API_KEY,
     projectSecret: process.env.INFURA_PROJECT_SECRET,
   },
 });

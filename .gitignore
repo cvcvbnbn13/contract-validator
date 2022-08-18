@@ -11,6 +11,10 @@
 # production
 /build
 
+#json
+/keys.json
+./src/utils/chains.json
+
 # misc
 .DS_Store
 .env.local

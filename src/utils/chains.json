@@ -4,8 +4,8 @@
     "chain": "ETH",
     "icon": "ethereum",
     "rpc": [
-      "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
-      "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+      "https://mainnet.infura.io/v3/2e94aa9592d947af847280bc506defff",
+      "wss://mainnet.infura.io/ws/v3/2e94aa9592d947af847280bc506defff",
       "https://api.mycryptoapi.com/eth",
       "https://cloudflare-eth.com"
     ],
@@ -47,8 +47,8 @@
     "chain": "ETH",
     "network": "testnet",
     "rpc": [
-      "https://ropsten.infura.io/v3/${INFURA_API_KEY}",
-      "wss://ropsten.infura.io/ws/v3/${INFURA_API_KEY}"
+      "https://ropsten.infura.io/v3/2e94aa9592d947af847280bc506defff",
+      "wss://ropsten.infura.io/ws/v3/2e94aa9592d947af847280bc506defff"
     ],
     "faucets": [
       "http://fauceth.komputing.org?chain=3&address=${ADDRESS}",
@@ -78,8 +78,8 @@
     "chain": "ETH",
     "network": "testnet",
     "rpc": [
-      "https://rinkeby.infura.io/v3/${INFURA_API_KEY}",
-      "wss://rinkeby.infura.io/ws/v3/${INFURA_API_KEY}"
+      "https://rinkeby.infura.io/v3/2e94aa9592d947af847280bc506defff",
+      "wss://rinkeby.infura.io/ws/v3/2e94aa9592d947af847280bc506defff"
     ],
     "faucets": [
       "http://fauceth.komputing.org?chain=4&address=${ADDRESS}",
@@ -109,8 +109,8 @@
     "chain": "ETH",
     "network": "testnet",
     "rpc": [
-      "https://goerli.infura.io/v3/${INFURA_API_KEY}",
-      "wss://goerli.infura.io/v3/${INFURA_API_KEY}",
+      "https://goerli.infura.io/v3/2e94aa9592d947af847280bc506defff",
+      "wss://goerli.infura.io/v3/2e94aa9592d947af847280bc506defff",
       "https://rpc.goerli.mudit.blog/"
     ],
     "faucets": [
@@ -700,8 +700,8 @@
     "rpc": [
       "https://kovan.poa.network",
       "http://kovan.poa.network:8545",
-      "https://kovan.infura.io/v3/${INFURA_API_KEY}",
-      "wss://kovan.infura.io/ws/v3/${INFURA_API_KEY}",
+      "https://kovan.infura.io/v3/2e94aa9592d947af847280bc506defff",
+      "wss://kovan.infura.io/ws/v3/2e94aa9592d947af847280bc506defff",
       "ws://kovan.poa.network:8546"
     ],
     "faucets": [
@@ -6454,7 +6454,7 @@
     "networkId": 42161,
     "nativeCurrency": { "name": "Ether", "symbol": "ETH", "decimals": 18 },
     "rpc": [
-      "https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}",
+      "https://arbitrum-mainnet.infura.io/v3/2e94aa9592d947af847280bc506defff",
       "https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}",
       "https://arb1.arbitrum.io/rpc"
     ],
@@ -8708,7 +8708,9 @@
     "name": "Palm Testnet",
     "chain": "Palm",
     "icon": "palm",
-    "rpc": ["https://palm-testnet.infura.io/v3/${INFURA_API_KEY}"],
+    "rpc": [
+      "https://palm-testnet.infura.io/v3/2e94aa9592d947af847280bc506defff"
+    ],
     "faucets": [],
     "nativeCurrency": { "name": "PALM", "symbol": "PALM", "decimals": 18 },
     "infoURL": "https://palm.io",
@@ -8728,7 +8730,9 @@
     "name": "Palm",
     "chain": "Palm",
     "icon": "palm",
-    "rpc": ["https://palm-mainnet.infura.io/v3/${INFURA_API_KEY}"],
+    "rpc": [
+      "https://palm-mainnet.infura.io/v3/2e94aa9592d947af847280bc506defff"
+    ],
     "faucets": [],
     "nativeCurrency": { "name": "PALM", "symbol": "PALM", "decimals": 18 },
     "infoURL": "https://palm.io",
