@@ -37,7 +37,9 @@ const InputSection = () => {
           disabled={parseInt(window.ethereum?.chainId) === 4}
         >
           {inputValue.Network === 'inject'
-            ? `${currentNetwork?.name} (MetaMask Injected)`
+            ? `${
+                currentNetwork?.name ? currentNetwork.name : ''
+              } (MetaMask Injected)`
             : 'Injected Provider - MetaMask'}
         </option>
       </select>
