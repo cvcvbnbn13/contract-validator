@@ -5,6 +5,7 @@ import {
   HANDLE_INPUT_TOOL,
   INIT_BATCH_TOOL,
   CHECK_ADDR_IS_CONTRACT,
+  CHECK_ADDR_IS_CONTRACT_FAILED,
   VALIDATE_BEGIN,
   ERC_165_CHECK,
   ERC_721_CHECK,
@@ -134,7 +135,14 @@ const ValidatorProvider = ({ children }) => {
       try {
         const res = await state.provider.getCode(state.inputValue.NFTAddress);
         const isContract = res !== '0x';
-        dispatch({ type: CHECK_ADDR_IS_CONTRACT, payload: { isContract } });
+        if (isContract) {
+          dispatch({ type: CHECK_ADDR_IS_CONTRACT, payload: { isContract } });
+          return;
+        }
+        dispatch({
+          type: CHECK_ADDR_IS_CONTRACT_FAILED,
+          payload: { isContract },
+        });
       } catch (error) {
         console.error(error);
       }

@@ -2,6 +2,7 @@ import {
   HANDLE_INPUT_TOOL,
   INIT_BATCH_TOOL,
   CHECK_ADDR_IS_CONTRACT,
+  CHECK_ADDR_IS_CONTRACT_FAILED,
   VALIDATE_BEGIN,
   ERC_165_CHECK,
   ERC_721_CHECK,
@@ -55,6 +56,16 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === CHECK_ADDR_IS_CONTRACT_FAILED) {
+    return {
+      ...state,
+      ContractValidatePart: {
+        ...state.ContractValidatePart,
+        addrIsContract: action.payload.isContract,
+      },
+      isValidating: false,
+    };
+  }
   if (action.type === VALIDATE_BEGIN) {
     return {
       ...state,
